@@ -4,12 +4,9 @@ on:
   push:
     branches:
       - "**"
-
-  workflow_dispatch:
-
-  push:
     tags:
       - "v*"
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -84,7 +81,6 @@ jobs:
             exit 1
           }
 
-          Write-Host "Windows binary:"
           Get-ChildItem "install\bin"
 
       - name: Package Windows x64
@@ -117,7 +113,6 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-
           sudo apt-get install -y \
             make \
             git \
@@ -153,9 +148,7 @@ jobs:
         working-directory: ${{ github.workspace }}
         run: |
           test -f install/bin/telegram-bot-api
-
           file install/bin/telegram-bot-api
-
           chmod +x install/bin/telegram-bot-api
 
       - name: Package Ubuntu x64
@@ -172,15 +165,12 @@ jobs:
           path: telegram-bot-api-linux-x64.tar.gz
           if-no-files-found: error
 
-
   release:
     name: Create GitHub Release
     needs:
       - build-windows
       - build-linux
-
     if: startsWith(github.ref, 'refs/tags/v')
-
     runs-on: ubuntu-24.04
 
     steps:
@@ -195,10 +185,6 @@ jobs:
         with:
           name: telegram-bot-api-linux-x64
           path: release
-
-      - name: List release files
-        run: |
-          ls -lah release
 
       - name: Create GitHub Release
         env:
