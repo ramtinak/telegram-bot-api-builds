@@ -26,8 +26,12 @@ jobs:
       - name: Setup Visual Studio
         uses: microsoft/setup-msbuild@v2
 
-      - name: Install CMake
-        uses: lukka/get-cmake@v4
+      - name: Check build tools
+        shell: pwsh
+        run: |
+          cmake --version
+          msbuild -version
+          git --version
 
       - name: Clone vcpkg
         shell: pwsh
@@ -123,6 +127,12 @@ jobs:
             clang-18 \
             libc++-18-dev \
             libc++abi-18-dev
+
+      - name: Check build tools
+        run: |
+          cmake --version
+          clang-18 --version
+          git --version
 
       - name: Configure
         working-directory: ${{ github.workspace }}
